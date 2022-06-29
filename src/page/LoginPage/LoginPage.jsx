@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Container, Form, Button, Image } from "react-bootstrap";
 import QRCode from "react-qr-code";
+import QRCodeComponent from "../../components/QRCodeComponent/QRCodeComponent";
 import { randomCodeGenerator } from "../../utils/randomCodeGenerator";
 
 import "./LoginPage.css";
@@ -11,7 +12,7 @@ const LoginPage = () => {
     code: randomCodeGenerator(25),
   });
 
-  const MINUTE_MS = 6000;
+  const MINUTE_MS = 60000;
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -47,10 +48,14 @@ const LoginPage = () => {
           </Button>
         </div>
         <br />
+
+       
+
+        <br />
         <Form.Group className="mb-3 text-center">
           <span className="text"> or</span>
           <br />
-          <QRCode size={200} value={JSON.stringify(values)} />
+          <QRCodeComponent codes={values} />
         </Form.Group>
       </Form>
     </Container>
