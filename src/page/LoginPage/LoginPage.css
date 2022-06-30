@@ -4,10 +4,11 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 50px;
+ 
 }
 
 .formLogin {
-  width: 30wh;
+  width: 460px;
   background-color: rgba(241, 241, 241, 0.74);
   border-radius: 25px;
   padding: 30px !important;
