@@ -1,12 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Button } from "react-bootstrap";
 import QRCode from "react-qr-code";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
+import { login } from "../../store/auth";
 
 const QRCodeComponent = (props) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { codes } = props;
-
   const [data, setData] = useState();
   const [stompClient, setStompClient] = useState(null);
   const [fileUploaded, setFileUploaded] = useState(false);
@@ -18,6 +22,18 @@ const QRCodeComponent = (props) => {
       type: "CLIENT",
     };
   };
+
+  useEffect(() => {
+    if (data != undefined && data.type == "SERVER") {
+      dispatch(
+        login({
+          myToken: data.message,
+        })
+      );
+      stompClient.disconnect();
+      navigate("/home");
+    }
+  }, [data]);
 
   useEffect(() => {
     const sock = new SockJS("http://localhost:8080/loginListener");
@@ -33,7 +49,6 @@ const QRCodeComponent = (props) => {
 
   const onConnected = () => {
     if (stompClient !== undefined && stompClient !== null) {
-      //sendMessage(username + " connected", "SYSTEM");
       stompClient.subscribe(
         "/topic/loginListener/" + codes.room,
         onMessageReceived
@@ -45,9 +60,6 @@ const QRCodeComponent = (props) => {
   const onMessageReceived = (payload) => {
     const message = JSON.parse(payload.body);
     setData(message);
-    // setTimeout(() => {
-    //
-    // }, 500);
   };
 
   const onError = (error) => {
@@ -55,59 +67,13 @@ const QRCodeComponent = (props) => {
   };
 
   const sendMessage = async (msg) => {
-    // if (msg !== "") {
-    //   const data = {
-    //     message: "",
-    //   };
     if (stompClient) {
-      console.log("message sending.....");
       stompClient.send("/app/login/" + codes.room, {}, JSON.stringify(msg));
     }
-    //  }
   };
 
   return (
     <div>
-      <Button
-        variant="primary"
-        onClick={() => {
-          let obj = {
-            room: codes.room,
-            code: "farkliKod1",
-            type: "CLIENT",
-          };
-          stompClient.send("/app/login/" + codes.room, {}, JSON.stringify(obj));
-        }}
-      >
-        farkliKod1
-      </Button>
-      <Button
-        variant="primary"
-        onClick={() => {
-          let obj = {
-            room: codes.room,
-            code: "farkliKod2",
-            type: "CLIENT",
-          };
-          stompClient.send("/app/login/" + codes.room, {}, JSON.stringify(obj));
-        }}
-      >
-        farkliKod2
-      </Button>
-      <Button
-        variant="primary"
-        onClick={() => {
-          let obj = {
-            room: codes.room,
-            code: "farkliKod2",
-            type: "MOBILE",
-            message: "jwt kodddd",
-          };
-          stompClient.send("/app/login/" + codes.room, {}, JSON.stringify(obj));
-        }}
-      >
-        mobile
-      </Button>
       <QRCode size={200} value={JSON.stringify(codes)} />
     </div>
   );
