@@ -5,30 +5,20 @@ export const authSlice = createSlice({
   initialState: {
     value: {
       isLoggedIn: false,
-      loggedInError: "",
+      myToken: "",
     },
   },
   reducers: {
     login: (state, action) => {
-      if (
-        action.payload.username === "grkn" &&
-        action.payload.password === "pass"
-      ) {
-        state.value = { isLoggedIn: true, loggedInError: "" };
-        console.log("login successfull", state.value.isLoggedIn);
-      } else {
-        state.value = {
-          isLoggedIn: false,
-          loggedInError: "Username or Password is wrong!",
-        };
-        console.log(
-          "Username or Password is wrong!",
-          state.value.loggedInError
-        );
-      }
+      state.value.myToken = action.payload.myToken;
+      state.value.isLoggedIn = true;
+    },
+    logout: (state, action) => {
+      state.value.myToken = "";
+      state.value.isLoggedIn = false;
     },
   },
 });
 
-export const { login } = authSlice.actions;
+export const { login, logout } = authSlice.actions;
 export default authSlice.reducer;
