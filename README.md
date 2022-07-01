@@ -39,8 +39,8 @@
 
 #### User credentials for testing
 ```bash
-   username: grkn
-   password: pass
+   username: gurkan
+   password: password
 ```
 
  ### dont forget to change backend url !
