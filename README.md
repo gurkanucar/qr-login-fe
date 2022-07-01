@@ -55,3 +55,15 @@
 ![example](./images/ex2.png)
 
 
+
+### Example Video:
+
+[https://www.youtube.com/watch?v=i5btOYd0Exw](https://www.youtube.com/watch?v=i5btOYd0Exw)
+
+### Other components:
+
+#### [frontend](https://github.com/gurkanucar/qr-login-fe)
+#### [mobile](https://github.com/gurkanucar/qr-login-mobile)
+#### [backend](https://github.com/gurkanucar/jwt-project)
+
+
